@@ -87,8 +87,20 @@ func (s *Node) Remove() {
 	switch {
 	case s.next != nil:
 		s.next.prev = s.prev
+		if s.prev == nil{
+			s.list.first = s.next
+		}else {
+			s.prev.next = s.next
+		}
+
 	case s.prev != nil:
 		s.prev.next = s.next
+		if s.next == nil{
+			s.list.last = s.prev
+		}else {
+			s.next.prev = s.prev
+		}
+
 	case s.next == nil && s.prev == nil:
 		s.list.first = nil
 		s.list.last = nil
@@ -114,14 +126,14 @@ func (d *DoubleLinkedList) Print() {
 func main() {
 	dll := DoubleLinkedList{}
 
-	s := []int{1,3,5,4}
+	s := []int{1,2,3,4,5}
 	for _, v := range s {
 		dll.PushBack(v)
 	}
 	fmt.Printf("Len %v\n", dll.Len())
 	dll.Print()
 
-	dll.first.Remove()
+	dll.first.next.Remove()
 	fmt.Printf("Len %v\n", dll.Len())
 	dll.Print()
 
